@@ -507,32 +507,34 @@ button:disabled {
   z-index: 10;
 }
 
-/* --- Top 10 results --- */
+/* --- Top 10 results ---
+   Mobile: a compact ranked list — all ten fit one phone screen so the
+   result can be screenshotted and shared in one shot (her friend's
+   ask). Season and wiki link are hidden here to keep rows tight; the
+   desktop card grid at the bottom of the file still shows them. */
 
 .top10-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 1rem;
-  margin: 1.25rem 0;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  margin: 0.75rem 0;
 }
 
 .top10-card {
   background: #221b21;
   border-radius: 0;
-  padding: 1rem 0.75rem;
+  padding: 0.3rem 0.6rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  text-align: center;
-  gap: 0.4rem;
-  position: relative;
+  text-align: left;
+  gap: 0.7rem;
 }
 
 .top10-card .rank {
-  position: absolute;
-  top: 0.6rem;
-  left: 0.7rem;
-  font-size: 0.85rem;
+  flex: 0 0 1.7rem;
+  text-align: right;
+  font-size: 1rem;
   font-weight: 700;
   color: #8d7f8d;
 }
@@ -543,14 +545,24 @@ button:disabled {
 .top10-card.rank-2 .rank { color: #9b8cf0; }
 .top10-card.rank-3 .rank { color: #d073b8; }
 
+.top10-card .avatar.large {
+  width: 2.6rem;
+  height: 2.6rem;
+  font-size: 0.9rem;
+  object-position: 50% 15%;
+}
+
 .top10-card .card-name {
   font-weight: 700;
   font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.top10-card .card-seasons {
-  color: #a2939d;
-  font-size: 0.75rem;
+.top10-card .card-seasons,
+.top10-card .wiki-link {
+  display: none;
 }
 
 .wiki-link {
@@ -828,5 +840,45 @@ button:disabled {
   .tournament-vs {
     font-size: 0.85rem;
     color: #8d7f8d;
+  }
+
+  /* Results back to the roomy card grid with seasons and wiki links. */
+  .top10-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1.25rem 0;
+  }
+
+  .top10-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+    padding: 1rem 0.75rem;
+    position: relative;
+  }
+
+  .top10-card .rank {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.7rem;
+    flex: none;
+    font-size: 0.85rem;
+  }
+
+  .top10-card .avatar.large {
+    width: 4.5rem;
+    height: 4.5rem;
+    font-size: 1.35rem;
+    object-position: 50% 15%;
+  }
+
+  .top10-card .card-name {
+    white-space: normal;
+  }
+
+  .top10-card .card-seasons,
+  .top10-card .wiki-link {
+    display: block;
   }
 }
