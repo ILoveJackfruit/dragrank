@@ -1,6 +1,9 @@
 from flask import Flask, send_from_directory
 
-app = Flask(__name__, static_folder="static", static_url_path="")
+# Folder is named docs/ (not static/) because GitHub Pages can only
+# serve from the repo root or a root-level docs/ folder — this way the
+# exact same files run locally via Flask and online via Pages.
+app = Flask(__name__, static_folder="docs", static_url_path="")
 
 
 @app.route("/")

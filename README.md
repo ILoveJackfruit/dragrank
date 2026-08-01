@@ -88,7 +88,7 @@ available from any screen) clears it.
 ## Scope (Phase 1)
 
 - **Dataset is hand-curated, not live.** There's no public Drag Race API.
-  `static/data/queens.js` bundles 288 queens — full rosters for US
+  `docs/data/queens.js` bundles 288 queens — full rosters for US
   mainline (S1–S16), All Stars, UK (S1–S7), Canada's Drag Race (S1–S6),
   and Drag Race Brasil (S1–S2), plus a lighter pass at Down Under, España,
   France, Philippines, Thailand, and Italia. Placements and seasons are
