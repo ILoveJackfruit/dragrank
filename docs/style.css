@@ -163,78 +163,99 @@ button:disabled {
   font-size: 0.82rem;
 }
 
-/* --- Onboarding search --- */
+/* --- Onboarding search ---
+   From her crayon wireframes: the search is the centerpiece of the
+   screen — a big solid berry bar, not a thin underline. Results show
+   as a photo grid, chosen queens stack as full-width rows with name
+   banners. Desktop restores the quiet underline version at the bottom
+   of the file. */
 
 #search-input {
   width: 100%;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 1.15rem;
+  font-weight: 700;
   border: none;
-  border-bottom: 1px solid rgba(224, 104, 140, 0.4);
-  background: none;
-  color: #ece6ea;
-  padding: 0.3rem 0.1rem;
+  background: #e0688c;
+  color: #191317;
+  padding: 0.85rem 1rem;
   outline: none;
 }
 
-#search-input:focus {
-  border-bottom-color: #e0688c;
+#search-input::placeholder {
+  color: rgba(25, 19, 23, 0.55);
 }
 
+/* Typing results as a 3-column photo grid, full-bleed like the other
+   photo surfaces. */
 .search-results {
   list-style: none;
-  margin: 0.5rem 0 0;
+  margin: 0.6rem 0 0 calc(-50vw + 50%);
   padding: 0;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.search-results:empty {
+  margin: 0;
+  width: auto;
 }
 
 .search-results li {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem 0.1rem;
+  position: relative;
+  height: 16dvh;
+  overflow: hidden;
   cursor: pointer;
-  border-bottom: 1px solid #302630;
 }
 
-.search-results li:last-child {
-  border-bottom: none;
+.search-results .avatar {
+  width: 100%;
+  height: 100%;
+  object-position: 50% 12%;
 }
 
-.search-results li:hover {
-  background: #2c2229;
-}
-
-.search-results .season-badge {
-  margin-left: auto;
-  font-size: 0.72rem;
-  color: #a2939d;
+.search-results li span:not(.season-badge) {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.9rem 0.35rem 0.25rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Edge-to-edge 3-column grid, full viewport width regardless of main's
-   padding — same full-bleed trick as the rating card. Three chosen
-   anchors fill the whole row with no gaps eating into that 33% each;
-   a 4th/5th wraps to a second row. */
+.search-results .season-badge {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.35rem;
+  font-size: 0.62rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 0.1rem 0.3rem;
+  white-space: nowrap;
+}
+
+/* Chosen queens stack as full-width rows (her sketch: NAME 1 / NAME 2 /
+   NAME 3 bars filling the space), each a wide face-cropped photo with a
+   solid berry name banner — same banner language as the search bar. */
 .anchor-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 2px;
   width: 100vw;
   margin: 1rem 0 1rem calc(-50vw + 50%);
 }
 
-/* Height comes from the viewport, not an aspect-ratio derived from the
-   (fixed, ~130px) column width — with exactly 3 chosen (one row), an
-   aspect-ratio-based height left most of the screen blank underneath.
-   Sizing off dvh instead means the row actually fills a fixed share of
-   the screen regardless of how many columns happen to be in it. Still
-   short enough relative to its width that object-fit:cover crops well
-   past the source photos' own ~3:4 portrait shape, landing on
-   face/shoulders rather than full body once object-position pins it to
-   the top. */
 .anchor-chip {
   position: relative;
-  height: 30dvh;
+  height: 19dvh;
   overflow: hidden;
 }
 
@@ -243,16 +264,15 @@ button:disabled {
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 0.5rem 0.4rem 0.4rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
+  padding: 0.35rem 1rem;
+  background: rgba(224, 104, 140, 0.92);
 }
 
 .anchor-overlay span {
   display: block;
-  color: #fff;
-  font-size: 0.85rem;
+  color: #191317;
+  font-size: 1rem;
   font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -294,20 +314,16 @@ button:disabled {
   font-size: 1.35rem;
 }
 
-/* Chosen anchors get a face-biased crop filling the whole grid tile —
-   bigger and more portrait-like than the shared .avatar.large size used
-   elsewhere (Top 10 cards, tournament comparisons), which stays
-   untouched. object-position pulls the crop toward the top of the
-   source photo, since these are full-body promo shots and a plain
-   center-crop mostly caught torso, not face. */
+/* Full-width short rows are already far wider than the source photos'
+   ~3:4 shape, so object-fit:cover crops hard on its own — no zoom
+   transform needed (the old scale(1.8) was tuned for narrow column
+   tiles and would land on foreheads here). Top-biased to keep faces. */
 .anchor-chip .avatar.large {
   width: 100%;
   height: 100%;
   border-radius: 0;
   font-size: 2rem;
-  object-position: 50% 0%;
-  transform: scale(1.8);
-  transform-origin: 50% 8%;
+  object-position: 50% 18%;
 }
 
 .avatar.hero {
@@ -600,6 +616,72 @@ button:disabled {
   #phase-onboard #search-input {
     text-align: left;
     font-size: 1rem;
+  }
+
+  /* Search back to the quiet underline input and text-row results. */
+  #search-input {
+    font-size: 1rem;
+    font-weight: 400;
+    background: none;
+    color: #ece6ea;
+    padding: 0.3rem 0.1rem;
+    border-bottom: 1px solid rgba(224, 104, 140, 0.4);
+  }
+
+  #search-input:focus {
+    border-bottom-color: #e0688c;
+  }
+
+  #search-input::placeholder {
+    color: #a2939d;
+  }
+
+  .search-results {
+    display: block;
+    width: auto;
+    margin: 0.5rem 0 0;
+  }
+
+  .search-results li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    height: auto;
+    overflow: visible;
+    padding: 0.4rem 0.1rem;
+    border-bottom: 1px solid #302630;
+  }
+
+  .search-results li:last-child {
+    border-bottom: none;
+  }
+
+  .search-results li:hover {
+    background: #2c2229;
+  }
+
+  .search-results .avatar {
+    width: 2rem;
+    height: 2rem;
+    object-position: 50% 15%;
+  }
+
+  .search-results li span:not(.season-badge) {
+    position: static;
+    padding: 0;
+    background: none;
+    color: #ece6ea;
+    font-size: 0.92rem;
+    font-weight: 400;
+  }
+
+  .search-results .season-badge {
+    position: static;
+    margin-left: auto;
+    font-size: 0.72rem;
+    color: #a2939d;
+    background: none;
+    padding: 0;
   }
 
   /* Anchor grid back to small centered squares, name below not overlaid. */
