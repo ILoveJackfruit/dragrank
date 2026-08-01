@@ -38,7 +38,7 @@ publishes).
 
 ## The data
 
-There's no official Drag Race API, so the dataset is hand-curated: 288
+There's no official Drag Race API, so the dataset is hand-curated: 392
 queens in [docs/data/queens.js](docs/data/queens.js), each with her
 seasons, franchise, style tags (used by the recommendations, not shown
 in the app) and a link to her wiki page. Photos come from the Drag Race

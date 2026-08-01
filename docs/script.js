@@ -202,13 +202,20 @@
   const anchorList = document.getElementById("anchor-list");
   const startRatingBtn = document.getElementById("start-rating-btn");
 
+  // Spaces, punctuation and accents don't count in search — "ben de la
+  // creme" has to find "BenDeLaCreme", "shea coulee" has to find
+  // "Coulée". Plain substring matching missed both.
+  function searchKey(text) {
+    return text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  }
+
   searchInput.addEventListener("input", () => {
-    const q = searchInput.value.trim().toLowerCase();
+    const q = searchKey(searchInput.value);
     searchResults.innerHTML = "";
     if (!q) return;
 
     const matches = QUEENS.filter(
-      (queen) => !(queen.id in state.ratings) && queen.name.toLowerCase().includes(q)
+      (queen) => !(queen.id in state.ratings) && searchKey(queen.name).includes(q)
     ).slice(0, 8);
 
     for (const queen of matches) {
