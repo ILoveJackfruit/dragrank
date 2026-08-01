@@ -584,7 +584,7 @@
         .map((f) => f[0])
         .join(" and ")} mixed in`;
     } else {
-      franchisePart = `genuinely international — ${franchises.length} different franchises`;
+      franchisePart = `genuinely international (${franchises.length} franchises)`;
     }
 
     let eraPart = "";
@@ -592,9 +592,9 @@
       const min = Math.min(...debutYears);
       const max = Math.max(...debutYears);
       const range = max - min;
-      if (range <= 2) eraPart = `, all from right around ${min}–${max} — one era, not spread out`;
+      if (range <= 2) eraPart = `, all from around ${min}–${max} (one era, not spread out)`;
       else if (range <= 6) eraPart = `, mostly one stretch of time (${min}–${max})`;
-      else eraPart = `, spanning ${min} to ${max} — you don't stick to one era`;
+      else eraPart = `, spanning ${min} to ${max} (no loyalty to one era)`;
     }
 
     return `${tagPart}, ${franchisePart}${eraPart}.`;
