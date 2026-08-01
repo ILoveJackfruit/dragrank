@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DragRank</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body class="onboard-active">
+
+<header>
+  <h1>DragRank</h1>
+  <p class="tagline">Rank your favorite queens. See what it says about you.</p>
+  <button id="header-reset-btn" class="header-reset">Start over</button>
+</header>
+
+<main>
+
+  <!-- Phase 0: Onboarding -->
+  <section id="phase-onboard" class="phase">
+    <h2>Start with a favorite</h2>
+    <p class="hint">Pick up to 5 queens you already love. We'll sort the rest around them.</p>
+    <input id="search-input" type="text" placeholder="Search a queen…" autocomplete="off" />
+    <ul id="search-results" class="search-results"></ul>
+
+    <div id="anchor-list" class="anchor-list"></div>
+
+    <button id="start-rating-btn" class="btn-primary" disabled>Start rating</button>
+  </section>
+
+  <!-- Phase 1: Rating deck -->
+  <section id="phase-rating" class="phase hidden">
+    <div class="rating-progress">
+      <span id="rated-count">0</span> rated &middot; <span id="fave-count">0</span> favorites
+    </div>
+
+    <div id="rating-card" class="rating-card"></div>
+
+    <div class="rating-buttons">
+      <button data-rating="-4" class="rate-btn">Dislike <span class="rate-key">(1)</span></button>
+      <button data-rating="-2" class="rate-btn">Meh <span class="rate-key">(2)</span></button>
+      <button data-rating="0" class="rate-btn">Neutral <span class="rate-key">(3)</span></button>
+      <button data-rating="2" class="rate-btn">Like <span class="rate-key">(4)</span></button>
+      <button data-rating="4" class="rate-btn">Love <span class="rate-key">(5)</span></button>
+      <button data-rating="unknown" class="rate-btn">Don't know <span class="rate-key">(6)</span></button>
+    </div>
+
+    <p id="deck-empty" class="hint hidden">That's everyone in the curated list. Nice.</p>
+  </section>
+
+  <!-- Soft nudge banner -->
+  <div id="nudge-banner" class="nudge-banner hidden">
+    <span>You've got enough favorites now. Build your Top 10, or keep going?</span>
+    <button id="nudge-build-btn" class="btn-primary btn-small">Build Top 10</button>
+    <button id="nudge-dismiss-btn" class="btn-ghost btn-small">Keep going</button>
+  </div>
+
+  <!-- Sticky floating button (post-dismiss) -->
+  <button id="sticky-build-btn" class="sticky-build-btn hidden"></button>
+
+  <!-- Phase 2: Head-to-head tournament -->
+  <section id="phase-tournament" class="phase hidden">
+    <h2>Which do you prefer?</h2>
+    <p class="hint" id="tournament-progress">Settling the order of your favorites, one pair at a time.</p>
+    <div class="tournament-versus">
+      <button id="tournament-left" class="tournament-card"></button>
+      <span class="tournament-vs">vs</span>
+      <button id="tournament-right" class="tournament-card"></button>
+    </div>
+  </section>
+
+  <!-- Phase 3: Results -->
+  <section id="phase-results" class="phase hidden">
+    <h2>Your Top 10</h2>
+    <p id="taste-summary" class="hint"></p>
+    <div id="top10-grid" class="top10-grid"></div>
+    <button id="show-more-btn" class="btn-ghost hidden">See #11–20</button>
+    <div id="top20-grid" class="top10-grid hidden"></div>
+    <button id="keep-rating-btn" class="btn-ghost">Keep rating</button>
+    <button id="reset-btn" class="btn-ghost">Start over</button>
+  </section>
+
+</main>
+
+<script src="data/queens.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

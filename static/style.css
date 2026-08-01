@@ -1,0 +1,685 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Georgia, "Charter", ui-serif, serif;
+  margin: 0;
+  padding: 0 1rem 3rem;
+  color: #222;
+  background: #fafafa;
+}
+
+header {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 0 0;
+  position: relative;
+}
+
+header h1 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.tagline {
+  margin: 0.4rem 0 0;
+  color: #767676;
+  font-size: 0.95rem;
+}
+
+/* The rating screen is the one place the photo should dominate — free up
+   the vertical space the header normally takes instead of competing
+   with it, especially precious on a phone screen. */
+body.rating-active .tagline {
+  display: none;
+}
+
+body.rating-active header {
+  padding-top: 0.85rem;
+}
+
+body.rating-active main {
+  margin-top: 0.6rem;
+}
+
+/* Onboarding reads more like an app's opening screen than a document —
+   centered and larger, not left-aligned body copy. */
+body.onboard-active header {
+  text-align: center;
+}
+
+body.onboard-active header h1 {
+  font-size: 2rem;
+}
+
+body.onboard-active .tagline {
+  font-size: 1.1rem;
+}
+
+/* Quiet until noticed — same resting/hover opacity language as an
+   occasional-use action, not a primary control. */
+.header-reset {
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  font-size: 0.8rem;
+  opacity: 0.35;
+}
+
+.header-reset:hover {
+  opacity: 1;
+}
+
+main {
+  max-width: 640px;
+  margin: 1.15rem auto 0;
+}
+
+h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem;
+}
+
+.hint {
+  color: #767676;
+  font-size: 0.88rem;
+  margin: 0 0 1rem;
+}
+
+/* Bigger, centered — the onboarding screen reads as an opening app
+   screen, not left-aligned body copy like the rest of the app. */
+#phase-onboard {
+  text-align: center;
+}
+
+#phase-onboard h2 {
+  font-size: 1.55rem;
+}
+
+#phase-onboard .hint {
+  font-size: 1.05rem;
+}
+
+#phase-onboard #search-input {
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* --- Buttons (flat, underlined text — no boxes, no fills, matching
+   rss-reader's button convention) --- */
+
+button {
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 400;
+  background: none;
+  border: none;
+  padding: 0.3rem 0.1rem;
+  color: #333;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(0, 0, 0, 0.28);
+  text-decoration-thickness: 1px;
+}
+
+button:hover {
+  text-decoration-color: rgba(0, 0, 0, 0.55);
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.5;
+  text-decoration-color: transparent;
+}
+
+.btn-primary {
+  font-size: 1.05rem;
+  color: #835463;
+  text-decoration-color: rgba(131, 84, 99, 0.4);
+}
+
+.btn-primary:hover {
+  text-decoration-color: rgba(131, 84, 99, 0.8);
+}
+
+.btn-ghost {
+  opacity: 0.6;
+}
+
+.btn-ghost:hover {
+  opacity: 1;
+}
+
+.btn-small {
+  font-size: 0.82rem;
+}
+
+/* --- Onboarding search --- */
+
+#search-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1rem;
+  border: none;
+  border-bottom: 1px solid rgba(131, 84, 99, 0.32);
+  background: none;
+  color: #222;
+  padding: 0.3rem 0.1rem;
+  outline: none;
+}
+
+#search-input:focus {
+  border-bottom-color: #835463;
+}
+
+.search-results {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+
+.search-results li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.search-results li:last-child {
+  border-bottom: none;
+}
+
+.search-results li:hover {
+  background: #f2f2f2;
+}
+
+.search-results .season-badge {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: #767676;
+  white-space: nowrap;
+}
+
+/* Edge-to-edge 3-column grid, full viewport width regardless of main's
+   padding — same full-bleed trick as the rating card. Three chosen
+   anchors fill the whole row with no gaps eating into that 33% each;
+   a 4th/5th wraps to a second row. */
+.anchor-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  width: 100vw;
+  margin: 1rem 0 1rem calc(-50vw + 50%);
+}
+
+/* Height comes from the viewport, not an aspect-ratio derived from the
+   (fixed, ~130px) column width — with exactly 3 chosen (one row), an
+   aspect-ratio-based height left most of the screen blank underneath.
+   Sizing off dvh instead means the row actually fills a fixed share of
+   the screen regardless of how many columns happen to be in it. Still
+   short enough relative to its width that object-fit:cover crops well
+   past the source photos' own ~3:4 portrait shape, landing on
+   face/shoulders rather than full body once object-position pins it to
+   the top. */
+.anchor-chip {
+  position: relative;
+  height: 30dvh;
+  overflow: hidden;
+}
+
+.anchor-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.5rem 0.4rem 0.4rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
+}
+
+.anchor-overlay span {
+  display: block;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.anchor-chip button {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  font-size: 0.85rem;
+  padding: 0 0.3rem;
+  text-decoration: none;
+  color: #333;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+}
+
+/* --- Avatars — soft rounded thumbnails, not circles or sharp squares --- */
+
+.avatar {
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  object-fit: cover;
+  background: #eee;
+}
+
+.avatar.large {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 12px;
+  font-size: 1.35rem;
+}
+
+/* Chosen anchors get a face-biased crop filling the whole grid tile —
+   bigger and more portrait-like than the shared .avatar.large size used
+   elsewhere (Top 10 cards, tournament comparisons), which stays
+   untouched. object-position pulls the crop toward the top of the
+   source photo, since these are full-body promo shots and a plain
+   center-crop mostly caught torso, not face. */
+.anchor-chip .avatar.large {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  font-size: 2rem;
+  object-position: 50% 0%;
+  transform: scale(1.8);
+  transform-origin: 50% 8%;
+}
+
+.avatar.hero {
+  width: 100%;
+  max-width: none;
+  height: 56dvh;
+  min-height: 320px;
+  border-radius: 0;
+  font-size: 4.5rem;
+  /* No override defaults to center-center, which crops straight through
+     the face on a tall full-body photo — same root cause as the anchor
+     grid crop. Biased toward the top third instead. */
+  object-position: 50% 20%;
+}
+
+/* --- Rating deck --- */
+
+.hidden {
+  display: none !important;
+}
+
+.rating-progress {
+  color: #767676;
+  font-size: 0.78rem;
+  margin-bottom: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Full-bleed: breaks out of main's centered max-width to touch both
+   screen edges regardless of ancestor padding — the standard trick for
+   one full-width element inside an otherwise-contained layout. */
+.rating-card {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: #eee;
+  overflow: hidden;
+}
+
+.card-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.5rem 1.25rem 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.32) 65%, transparent);
+  text-align: left;
+}
+
+.card-overlay .card-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.card-overlay .card-seasons-corner {
+  position: static;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.75rem;
+  max-width: none;
+  text-align: left;
+  margin-top: 0.15rem;
+}
+
+.card-overlay .wiki-link {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+  display: inline-block;
+  margin-top: 0.4rem;
+}
+
+.card-overlay .wiki-link:hover {
+  text-decoration-color: rgba(255, 255, 255, 0.9);
+}
+
+.rating-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 1.1rem;
+  margin-top: 1.25rem;
+}
+
+.rate-btn {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.rate-key {
+  opacity: 0.45;
+  font-size: 0.78rem;
+}
+
+/* --- Head-to-head tournament --- */
+
+.tournament-versus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.tournament-card {
+  flex: 1;
+  max-width: 220px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 1px 1px rgba(131, 84, 99, 0.15), 0 3px 10px rgba(131, 84, 99, 0.08);
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.tournament-card:hover {
+  box-shadow: 0 1px 1px rgba(131, 84, 99, 0.2), 0 4px 14px rgba(131, 84, 99, 0.18);
+}
+
+.tournament-card .card-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.tournament-vs {
+  color: #999;
+  font-size: 0.85rem;
+  flex: 0 0 auto;
+}
+
+/* --- Soft nudge banner --- */
+
+.nudge-banner {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 90vw;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 1px 1px rgba(131, 84, 99, 0.15), 0 3px 10px rgba(131, 84, 99, 0.12);
+  padding: 0.75rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  z-index: 10;
+  font-size: 0.88rem;
+}
+
+.sticky-build-btn {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  background: #fff;
+  border-radius: 999px;
+  box-shadow: 0 1px 1px rgba(131, 84, 99, 0.15), 0 3px 10px rgba(131, 84, 99, 0.15);
+  padding: 0.6rem 1.1rem;
+  font-size: 0.85rem;
+  color: #835463;
+  z-index: 10;
+}
+
+/* --- Top 10 results --- */
+
+.top10-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.top10-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 1px 1px rgba(131, 84, 99, 0.15), 0 3px 10px rgba(131, 84, 99, 0.08);
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.4rem;
+  position: relative;
+}
+
+.top10-card .rank {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #999;
+}
+
+.top10-card.rank-1 .rank { color: #a3822c; }
+.top10-card.rank-2 .rank { color: #767676; }
+.top10-card.rank-3 .rank { color: #93532c; }
+
+.top10-card .card-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.top10-card .card-seasons {
+  color: #767676;
+  font-size: 0.75rem;
+}
+
+.wiki-link {
+  font-size: 0.82rem;
+  margin-top: 0.2rem;
+}
+
+/* ==========================================================================
+   Desktop/wide-browser override.
+
+   Everything above this point (full-bleed rating photo + overlay text,
+   the face-cropped anchor grid, centered/larger onboarding type) was
+   built mobile-first and looks right on a phone but wrong stretched
+   across a wide browser window — a giant edge-to-edge photo reads as a
+   bug, not a design, at that width. This block restores the contained,
+   rounded-card desktop layout that existed before that work, for
+   viewports wide enough to be a real browser window rather than a
+   phone. 700px is comfortably past every phone (including landscape)
+   and comfortably before a real desktop window.
+
+   Deliberately overrides the mobile rules rather than replacing them —
+   the mobile-first CSS above stays exactly as-is for narrow viewports.
+   ========================================================================== */
+@media (min-width: 700px) {
+  body.rating-active .tagline {
+    display: block;
+  }
+
+  body.rating-active header {
+    padding-top: 2rem;
+  }
+
+  body.rating-active main {
+    margin-top: 1.15rem;
+  }
+
+  body.onboard-active header {
+    text-align: left;
+  }
+
+  body.onboard-active header h1 {
+    font-size: 1.3rem;
+  }
+
+  body.onboard-active .tagline {
+    font-size: 0.95rem;
+  }
+
+  #phase-onboard {
+    text-align: left;
+  }
+
+  #phase-onboard h2 {
+    font-size: 1.05rem;
+  }
+
+  #phase-onboard .hint {
+    font-size: 0.88rem;
+  }
+
+  #phase-onboard #search-input {
+    text-align: left;
+    font-size: 1rem;
+  }
+
+  /* Anchor grid back to small centered squares, name below not overlaid. */
+  .anchor-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    width: auto;
+    margin: 1rem 0;
+  }
+
+  .anchor-chip {
+    height: auto;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .anchor-chip .avatar.large {
+    width: 6.5rem;
+    height: 6.5rem;
+    border-radius: 16px;
+    font-size: 2rem;
+    transform: none;
+    object-position: 50% 12%;
+  }
+
+  .anchor-overlay {
+    position: static;
+    background: none;
+    padding: 0.35rem 0 0;
+  }
+
+  .anchor-overlay span {
+    color: #222;
+    font-weight: 400;
+    font-size: 0.9rem;
+    text-shadow: none;
+    max-width: 6.5rem;
+  }
+
+  .anchor-chip button {
+    top: -0.3rem;
+    right: -0.3rem;
+    color: #767676;
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Rating card back to a contained, padded white card — not full-bleed. */
+  .rating-card {
+    width: auto;
+    margin-left: 0;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 1px 1px rgba(131, 84, 99, 0.15), 0 3px 10px rgba(131, 84, 99, 0.08);
+    padding: 1.5rem 1.5rem 2.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .avatar.hero {
+    max-width: 280px;
+    height: 340px;
+    min-height: 0;
+    border-radius: 14px;
+    font-size: 3.5rem;
+  }
+
+  /* Name/season/wiki-link move from an overlay on the photo back to
+     plain text below it, in the card's own dark-on-white palette. */
+  .card-overlay {
+    position: static;
+    padding: 0;
+    background: none;
+    text-align: center;
+  }
+
+  .card-overlay .card-name {
+    color: #222;
+    text-shadow: none;
+    font-size: 1.4rem;
+    margin-top: 0.4rem;
+  }
+
+  .card-overlay .card-seasons-corner {
+    color: #999;
+    font-size: 0.7rem;
+  }
+
+  .card-overlay .wiki-link {
+    color: initial;
+    text-decoration-color: rgba(0, 0, 0, 0.28);
+    margin-top: 0.2rem;
+  }
+
+  .card-overlay .wiki-link:hover {
+    text-decoration-color: rgba(0, 0, 0, 0.55);
+  }
+}
